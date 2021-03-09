@@ -1,13 +1,14 @@
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Activation, Dropout, Flatten, Dense
+from keras.preprocessing.image import ImageDataGenerator
 
 model = Sequential()
-model.add(Conv2D(32, (3, 3), input_shape=(3, 150, 150)))
-model.add(Activation('relu'))
+model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu',
+                 padding='same', input_shape=(150, 150, 3)))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(32, (3, 3)))
-model.add(Activation('relu'))
+model.add(Conv2D(filters=64, kernel_size=(3, 3),
+                 activation='relu', padding='same'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Conv2D(64, (3, 3)))
@@ -16,16 +17,16 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 
 # this converts our 3D feature maps to 150D feature vectors
 model.add(Flatten())
-model.add(Dense(64))
-model.add(Activation('relu'))
-model.add(Dropout(0.5))
-model.add(Dense(150))
-model.add(Activation('sigmoid'))
+# model.add(Dense(64))
+# model.add(Activation('relu'))
+# model.add(Dropout(0.5))
+model.add(Dense(units=150, activation='softmax'))
 
-model.compile(loss='mean_squared_error',
-              optimizer='rmsprop',
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
               metrics=['accuracy'])
 
+batch_size = 16
 
 # this is the augmentation configuration we will use for training
 train_datagen = ImageDataGenerator(
@@ -42,14 +43,14 @@ test_datagen = ImageDataGenerator(rescale=1./255)
 # subfolers of 'data/train', and indefinitely generate
 # batches of augmented image data
 train_generator = train_datagen.flow_from_directory(
-    'PokemonData',  # this is the target directory
+    'PokemonData/',  # this is the target directory
     target_size=(150, 150),  # all images will be resized to 150x150
     batch_size=batch_size,
     class_mode='categorical')  # since we use binary_crossentropy loss, we need binary labels
 
 # this is a similar generator, for validation data
 validation_generator = test_datagen.flow_from_directory(
-    'PokemonData',
+    'PokemonData/',
     target_size=(150, 150),
     batch_size=batch_size,
     class_mode='categorical')
