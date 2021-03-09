@@ -43,6 +43,7 @@ email: bertil.braun.private@gmail.com
 - [Table of Contents](#table-of-contents)
 - [About The Project](#about-the-project)
 - [Built With](#built-with)
+  - [Model](#model)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Roadmap](#roadmap)
@@ -67,6 +68,30 @@ And on the main branch a pokemon classifier. A convolutional Neuronal Network tr
 - Matplotlib
 - Numpy
 
+### Model
+Model: "sequential"
+_________________________________________________________________
+| Layer (type) | Output Shape         | Param   |
+| ------------ | -------------------- | ------- |
+| Conv2D       | (None, 150, 150, 32) | 896     |
+| MaxPooling2D | (None, 75, 75, 32)   | 0       |
+| Conv2D       | (None, 75, 75, 64)   | 18496   |
+| MaxPooling2  | (None, 37, 37, 64)   | 0       |
+| Conv2D       | (None, 35, 35, 64)   | 36928   |
+| Activation   | (None, 35, 35, 64)   | 0       |
+| MaxPooling2  | (None, 17, 17, 64)   | 0       |
+| Flatten      | (None, 18496)        | 0       |
+| Dense        | (None, 150)          | 2774550 |
+_________________________________________________________________
+| Parameters            | Count     |
+| --------------------- | --------- |
+| Total params:         | 2,830,870 |
+| Trainable params:     | 2,830,870 |
+| Non-trainable params: | 0         |
+_________________________________________________________________
+
+Found 6820 images belonging to 150 classes.
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -84,6 +109,7 @@ A Machine learning Model to Classify Pokemon :)
 - Run `python ./test.py`
 - Input your image path and see the prediced name
 
+![Training](assets/Training.png)
 ![Prediction](assets/prediction.png)
 
 Currently limited to the ones listed [here](https://github.com/BertilBraun/Keras-Testing/tree/main/PokemonData).
